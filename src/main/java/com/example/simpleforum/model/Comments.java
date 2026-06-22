@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class Comments {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Posts post;
@@ -29,21 +29,24 @@ public class Comments {
 
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
+	
+	@Column(nullable = false)
+	private LocalDateTime updatedAt;
 
 	// コンストラクタ
 	public Comments() {
 	}
 
-	public Comments(Long id, Posts post, Users user, String text, LocalDateTime createdAt) {
-		this.id = id;
+	public Comments(Posts post, Users user, String text, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.post = post;
 		this.user = user;
 		this.text = text;
 		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	// ゲッター
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -62,9 +65,13 @@ public class Comments {
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
+	
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
 
 	// セッター
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -83,10 +90,15 @@ public class Comments {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+	
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
+	// toString
 	@Override
 	public String toString() {
-		return "Comments [id=" + id + ", post=" + (post != null ? post.getId() : null) + ", user="
-				+ (user != null ? user.getId() : null) + ", text=" + text + ", createdAt=" + createdAt + "]";
+		return "Comments [id=" + id + ", post=" + post + ", user=" + user + ", text=" + text + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }

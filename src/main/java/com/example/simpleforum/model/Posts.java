@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class Posts {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	@Column(nullable = false, length = 100)
 	private String title;
@@ -36,8 +36,7 @@ public class Posts {
 	// コンストラクタ
 	public Posts() {}
 	
-	public Posts(Long id, String title, String text, Users user, LocalDateTime createdAt, LocalDateTime updatedAt) {
-		this.id = id;
+	public Posts(String title, String text, Users user, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.title = title;
 		this.text = text;
 		this.user = user;
@@ -46,7 +45,7 @@ public class Posts {
 	}
 
 	// ゲッター
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -71,7 +70,7 @@ public class Posts {
 	}
 
 	// セッター
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
