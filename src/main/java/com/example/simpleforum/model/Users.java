@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 	@Column(nullable = false, unique = true, length = 50)
 	private String userName;
@@ -34,8 +34,7 @@ public class Users {
 	// コンストラクタ
 	public Users() {}
 
-	public Users(Long id, String userName, String password, Role role, LocalDateTime createdAt) {
-		this.id = id;
+	public Users(String userName, String password, Role role, LocalDateTime createdAt) {
 		this.userName = userName;
 		this.password = password;
 		this.role = role;
@@ -43,7 +42,7 @@ public class Users {
 	}
 
 	// ゲッター
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -64,7 +63,7 @@ public class Users {
 	}
 
 	// セッター
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -84,6 +83,7 @@ public class Users {
 		this.createdAt = createdAt;
 	}
 
+	// toString
 	@Override
 	public String toString() {
 		return "Users [id=" + id + ", userName=" + userName + ", role=" + role + ", createdAt=" + createdAt + "]";

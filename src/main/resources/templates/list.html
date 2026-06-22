@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<title th:text="${title}"></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body class="container">
+		<div class="d-flex justify-content-between align-items-center my-3">
+			<h1 class="display-4" th:text="${title}"></h1>
+			<div class="text-end">
+				<span th:text="${loginUser.userName}"></span>
+				<span class="badge bg-secondary" th:text="${loginUser.role}"></span>
+				<form th:action="@{/logout}" method="post" class="d-inline">
+					<button type="submit" class="btn btn-sm btn-outline-danger">ログアウト</button>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
