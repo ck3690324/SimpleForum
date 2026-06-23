@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 public class Comments {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	/** 外部キー名を明確にする **/
@@ -42,7 +42,6 @@ public class Comments {
 	}
 
 	public Comments(Posts post, Users user, String text, LocalDateTime createdAt, LocalDateTime updatedAt) {
-		
 		this.post = post;
 		this.user = user;
 		this.text = text;
@@ -51,7 +50,7 @@ public class Comments {
 	}
 
 	// ゲッター
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -76,7 +75,7 @@ public class Comments {
 	}
 
 	// セッター
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -100,9 +99,10 @@ public class Comments {
 		this.updatedAt = updatedAt;
 	}
 
+	// toString
 	@Override
 	public String toString() {
-		return "Comments [id=" + id + ", post=" + (post != null ? post.getId() : null) + ", user="
-				+ (user != null ? user.getId() : null) + ", text=" + text + ", createdAt=" + createdAt+ ", updatedAt=" + updatedAt + "]";
+		return "Comments [id=" + id + ", post=" + post + ", user=" + user + ", text=" + text + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }

@@ -13,7 +13,7 @@ import com.example.simpleforum.model.Comments;
 import com.example.simpleforum.model.Posts;
 import com.example.simpleforum.model.Users;
 import com.example.simpleforum.repository.CommentRepository;
-import com.example.simpleforum.repository.PostRepository;
+import com.example.simpleforum.repository.PostsRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -37,16 +37,16 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
     /** 投稿情報を操作するRepository */
-    private final PostRepository postRepository;
+    private final PostsRepository postsRepository;
 
     /**
      * コンストラクタインジェクション
      * RepositoryをDIコンテナから受け取る
      */
     public CommentController(CommentRepository commentRepository,
-                             PostRepository postRepository) {
+                             PostsRepository postsRepository) {
         this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
+        this.postsRepository = postsRepository;
     }
 
     /**
@@ -69,7 +69,7 @@ public class CommentController {
         }
 
         /** コメント対象の投稿を取得 (postId を使って、投稿を検索す) */
-        Posts post = postRepository.findById(postId).orElse(null);
+        Posts post = postsRepository.findById(postId).orElse(null);
 
         /** 投稿が存在しない場合は一覧画面へ戻す */
         if (post == null) {
@@ -100,7 +100,7 @@ public class CommentController {
     @RequestMapping(value = "/delete/{id}/confirm", method = RequestMethod.GET)
     public String deleteConfirm(
     		/** URLからコメントIDを受け取る **/
-            @PathVariable Long id, // コメントID
+            @PathVariable int id, // コメントID
             Model model,
             HttpSession session) {
 
@@ -135,7 +135,7 @@ public class CommentController {
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public String deleteComment(
-            @PathVariable Long id,
+            @PathVariable int id,
             HttpSession session) {
 
         /** ログインユーザーを確認する */
@@ -155,14 +155,14 @@ public class CommentController {
         }
 
         /** 削除後に戻るため投稿IDを取得 */
-        Long postId = comment.getPost().getId();
+        int postId = comment.getPost().getId();
 
         /**
          * コメント投稿者本人
          * または管理者(ADMIN)
          * の場合のみ削除を許可
          */
-        if (comment.getUser().getId().equals(loginUser.getId())
+        if (comment.getUser().getId() == (loginUser.getId())
                 || "ADMIN".equals(loginUser.getRole())) {
 
             /** コメント削除 */
@@ -185,7 +185,7 @@ public class CommentController {
  			return "redirect:/";
  		}
 
- 		Posts post = postRepository.findById(postId).orElse(null);
+ 		Posts post = postsRepository.findById(postId).orElse(null);
 
  		if (post == null) {
  			return "redirect:/title";

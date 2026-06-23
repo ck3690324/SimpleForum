@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.simpleforum.model.Role;
 import com.example.simpleforum.model.Users;
-import com.example.simpleforum.repository.UserRepository;
+import com.example.simpleforum.repository.UsersRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,14 +27,14 @@ import jakarta.servlet.http.HttpSession;
 public class AdminController {
 
     /** ユーザー情報を操作するRepository */
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     /**
      * コンストラクタインジェクション
      * UserRepositoryをDIコンテナ(Springがオブジェクト（Bean）を管理する仕組み)から受け取る
      */
-    public AdminController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AdminController(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
     }
 
     /**
@@ -59,7 +59,7 @@ public class AdminController {
         model.addAttribute("loginUser", loginUser);
 
         /** 全ユーザー一覧をDBから取得して画面へ渡す */
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", usersRepository.findAll());
 
         /** admin-users.htmlを表示 */
         return "admin-users";
@@ -70,7 +70,7 @@ public class AdminController {
      * URL：/admin/user/delete/{id}
      */
     @RequestMapping(value = "/admin/user/delete/{id}", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable Long id, HttpSession session) {
+    public String deleteUser(@PathVariable int id, HttpSession session) {
 
         /** セッションからログインユーザーを取得 */
         Users loginUser = (Users) session.getAttribute("loginUser");
@@ -87,10 +87,10 @@ public class AdminController {
          * 自分自身のアカウントは削除できないようにする
          * 管理者が誤って自分を削除することを防ぐ
          */
-        if (!loginUser.getId().equals(id)) {
+        if (loginUser.getId() != id) {
 
             /** 指定されたユーザーを削除 */
-            userRepository.deleteById(id);
+            usersRepository.deleteById(id);
         }
 
         /** ユーザー一覧画面へ戻る */

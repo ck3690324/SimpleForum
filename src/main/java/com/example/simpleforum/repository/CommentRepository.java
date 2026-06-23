@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.simpleforum.model.Comments;
 
-public interface CommentRepository extends JpaRepository<Comments, Long> {
+public interface CommentRepository extends JpaRepository<Comments, Integer> {
 
     /** 投稿ごとのコメント一覧取得 **/
     List<Comments> findByPostIdOrderByCreatedAtAsc(Long postId);
