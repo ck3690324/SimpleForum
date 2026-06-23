@@ -35,8 +35,8 @@
 		<div class="my-3 d-flex gap-2">
 		    <a th:href="@{/posts/{id}/comments/new(id=${data.id})}" class="btn btn-outline-primary">返信する</a>
 			<div th:if="${canEdit}">
-			    <a th:href="@{/posts/{id}/edit(id=${data.id})}" class="btn btn-outline-secondary">編集</a>
-			    <a th:href="@{/posts/{id}/delete(id=${data.id})}" class="btn btn-outline-danger">削除</a>
+			    <a th:href="@{/posts/edit/{id}(id=${data.id})}" class="btn btn-outline-secondary">編集</a>
+			    <a th:href="@{/posts/delete/{id}(id=${data.id})}" class="btn btn-outline-danger">削除</a>
 			</div>
 		</div>
 		
