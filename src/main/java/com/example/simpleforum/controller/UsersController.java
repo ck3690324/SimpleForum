@@ -88,13 +88,8 @@ public class UsersController {
 		
 		// ページタイトル(エラー時)
 		mav.addObject("title", "シンプルフォーラム | 新規登録");
-		
-		// 空欄チェック
-		if(username.isBlank() || password.isBlank()) {
-			mav.setViewName("login");
-			mav.addObject("msg", "ユーザー名またはパスワードに空欄があります。");
-		}
-		// 登録+ログインをトライ
+
+		// 登録+ログイン
 		try {
 			// 登録処理(暗号化はサービス側で処理を行う)
 			usersService.register(username, password);

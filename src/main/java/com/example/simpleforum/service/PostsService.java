@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.simpleforum.model.Posts;
+import com.example.simpleforum.model.Role;
 import com.example.simpleforum.model.Users;
 import com.example.simpleforum.repository.PostsRepository;
 
@@ -24,6 +25,11 @@ public class PostsService {
 	 * @return
 	 */
 	public Posts create(String title, String text, Users author) {
+		// 空欄チェック
+		if (title.isBlank() || text.isBlank()) {
+			throw new IllegalArgumentException("タイトルと本文を入力してください");
+		}
+		
 		// コンストラクタを使ってインスタンスを生成
 		Posts post = new Posts(title, text, author, LocalDateTime.now(), LocalDateTime.now());
 		
@@ -57,11 +63,16 @@ public class PostsService {
 	 * @return
 	 */
 	public Posts update(Long id, String title, String text, Users loginUser) {
+		// 空欄チェック
+		if (title.isBlank() || text.isBlank()) {
+			throw new IllegalArgumentException("タイトルと本文を入力してください");
+		}
+				
 		// 投稿検索
 		Posts post = findById(id);
 		
 		// 編集権限チェック
-//		checkAuthor(post, loginUser);
+		checkAuthor(post, loginUser);
 		
 		// セッターを使って内容を変更
 		post.setTitle(title);
@@ -72,8 +83,15 @@ public class PostsService {
 		return postsRepository.save(post);
 	}
 	
+	/**
+	 * 投稿削除
+	 * @param id 投稿ID
+	 * @param loginUser 現在のユーザー情報
+	 */
 	public void delete(Long id, Users loginUser) {
-		
+		Posts post = findById(id);
+		checkAuthor(post, loginUser);
+		postsRepository.delete(post);
 	}
 
 	/**
@@ -81,15 +99,13 @@ public class PostsService {
 	 * @param post 投稿
 	 * @param loginUser 現在のユーザー情報
 	 */
-//	private void checkAuthor(Posts post, Users loginUser) {
-//		// 作者チェック
-//		boolean isAuthor = post.getUser() != null && post.getUser().getId().equals(loginUser.getId());
-//		// 管理者チェック
-//		boolean isAdmin = loginUser.getRole() == Role.ADMIN;
-//		
-//		// 作者、管理者でもない場合 = 権限ない
-//		if(!isAuthor && !isAdmin) {
-//			throw new SecurityException("この投稿を編集することが出来ません。");
-//		}
-//	}
+	private void checkAuthor(Posts post, Users loginUser) {
+		boolean isAuthor = post.getUser() != null && post.getUser().getId() == loginUser.getId();
+		boolean isAdmin = loginUser.getRole() == Role.ADMIN;
+		
+		// 作者、管理者でもない場合 = 権限ない
+		if(!isAuthor && !isAdmin) {
+			throw new SecurityException("この投稿を編集・削除することが出来ません。");
+		}
+	}
 }
