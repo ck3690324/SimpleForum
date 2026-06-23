@@ -18,6 +18,7 @@ import com.example.simpleforum.service.PostsService;
 import com.example.simpleforum.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PostsController {
@@ -36,10 +37,11 @@ public class PostsController {
 	@GetMapping("/posts")
 	public ModelAndView index(
 			ModelAndView mav,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
 		
 		mav.setViewName("list");
 		mav.addObject("title", "投稿一覧");
+		session.setAttribute("loginUser", getLoginUser(request));
 		
 		// 投稿全件取得
 		List<Posts> list = postsService.findAll();
@@ -143,9 +145,10 @@ public class PostsController {
 		// 投稿内容取得
 		try {
 			Posts post = postsService.findById(id);
-			mav.setViewName("detail");
+			mav.setViewName("body");
 			mav.addObject("title", post.getTitle());
-			mav.addObject("data", post);
+			//mav.addObject("data", post);
+			 mav.addObject("post", post);
 
 			// 編集権限確認
 			boolean canEdit = (

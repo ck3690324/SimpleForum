@@ -2,7 +2,6 @@ package com.example.simpleforum.controller;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +14,6 @@ import com.example.simpleforum.model.Posts;
 import com.example.simpleforum.model.Users;
 import com.example.simpleforum.repository.CommentRepository;
 import com.example.simpleforum.repository.PostsRepository;
-import com.example.simpleforum.service.PostsService;
-import com.example.simpleforum.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -39,17 +36,11 @@ public class CommentController {
 	/**
 	 * コンストラクタインジェクション RepositoryをDIコンテナから受け取る
 	 */
-	public CommentController(CommentRepository commentRepository, PostsRepository postsRepository,
-			UsersService usersService) {
+
+	public CommentController(CommentRepository commentRepository, PostsRepository postsRepository) {
 		this.commentRepository = commentRepository;
 		this.postsRepository = postsRepository;
 	}
-
-	@Autowired
-	private PostsService postsService;
-
-	@Autowired
-	private UsersService usersService;
 
 	/**
 	 * コメント登録処理 投稿詳細画面から送信されたコメントを保存する
@@ -91,7 +82,7 @@ public class CommentController {
 		commentRepository.save(comment);
 
 		/** 投稿詳細画面へ戻る */
-		return "redirect:/body/" + postId;
+		return "redirect:/posts/" + postId;
 	}
 
 	/**
@@ -122,6 +113,7 @@ public class CommentController {
 		/** 画面へデータを渡す */
 		model.addAttribute("mode", "deleteComment");
 		model.addAttribute("comment", comment);
+		model.addAttribute("loginUser", loginUser);
 		model.addAttribute("post", comment.getPost());
 
 		/** 削除確認画面表示(form.html) */
@@ -167,25 +159,39 @@ public class CommentController {
 	}
 
 	// コメント入力画面表示
-	@RequestMapping(value = "/new/{id}", method = RequestMethod.GET)
+	/**
+	 * 
+	 * @param postId  コメント対象の投稿IDを受け取る
+	 * @param model   画面へデータを渡すModel
+	 * @param session セッション情報取得
+	 * @return
+	 */
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String commentForm(@RequestParam Long postId, Model model, HttpSession session) {
 
-		Users loginUser = (Users) session.getAttribute("loginUser");
-
+		// ユーザー(投稿者)情報を取得
+		/** ログイン中ユーザー取得 **/
+		Users loginUser = (Users)session.getAttribute("loginUser");
+		/** 未ログインの場合はログイン画面へ戻す **/
 		if (loginUser == null) {
 			return "redirect:/";
 		}
-
+		/** 投稿IDから対象投稿を取得 **/
 		Posts post = postsRepository.findById(postId).orElse(null);
-
+		/** 投稿が存在しない場合はタイトル一覧へ戻す **/
 		if (post == null) {
-			return "redirect:/title";
+			return "redirect:/posts";
 		}
-
+		/** form.html をコメント入力モードで表示するためのフラグ **/
 		model.addAttribute("mode", "comment");
+		/** コメント対象の投稿情報を画面へ渡す **/
 		model.addAttribute("post", post);
+		/** ログインユーザー情報を画面へ渡す **/
 		model.addAttribute("loginUser", loginUser);
-
+		
+		model.addAttribute("title", "投稿・編集・コメント・削除確認ページ");
+		model.addAttribute("readonly", false);
+		/** form.html を表示 **/
 		return "form";
 	}
 }
