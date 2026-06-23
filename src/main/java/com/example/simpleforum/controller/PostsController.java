@@ -195,7 +195,7 @@ public class PostsController {
 			// 表示用オブジェクト
 			mav.addObject("data", post);
 			mav.addObject("title", "投稿編集");
-			mav.addObject("formAction", "/posts/" + id + "/edit");
+			mav.addObject("formAction", "/posts/edit" + id);
 			mav.addObject("submitLabel", "更新する");
 			mav.addObject("cancelHref", "/posts/" + id);
 

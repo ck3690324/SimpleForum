@@ -2,6 +2,7 @@ package com.example.simpleforum.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,192 +15,177 @@ import com.example.simpleforum.model.Posts;
 import com.example.simpleforum.model.Users;
 import com.example.simpleforum.repository.CommentRepository;
 import com.example.simpleforum.repository.PostsRepository;
+import com.example.simpleforum.service.PostsService;
+import com.example.simpleforum.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 
 /**
- * クラス名：CommentController
- * 役割：コメントの登録・削除を担当するコントローラー
- * 使用アノテーション：@Controller
- * 利用Repository：CommentRepository、PostRepository
- * セッション利用：loginUser
- * 主な機能：
- * ・コメント登録
- * ・コメント削除確認
- * ・コメント削除
+ * クラス名：CommentController 役割：コメントの登録・削除を担当するコントローラー 使用アノテーション：@Controller
+ * 利用Repository：CommentRepository、PostRepository セッション利用：loginUser 主な機能： ・コメント登録
+ * ・コメント削除確認 ・コメント削除
  */
 
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
 
-    /** コメント情報を操作するRepository */
-    private final CommentRepository commentRepository;
+	/** コメント情報を操作するRepository */
+	private final CommentRepository commentRepository;
 
-    /** 投稿情報を操作するRepository */
-    private final PostsRepository postsRepository;
+	/** 投稿情報を操作するRepository */
+	private final PostsRepository postsRepository;
 
-    /**
-     * コンストラクタインジェクション
-     * RepositoryをDIコンテナから受け取る
-     */
-    public CommentController(CommentRepository commentRepository,
-                             PostsRepository postsRepository) {
-        this.commentRepository = commentRepository;
-        this.postsRepository = postsRepository;
-    }
+	/**
+	 * コンストラクタインジェクション RepositoryをDIコンテナから受け取る
+	 */
+	public CommentController(CommentRepository commentRepository, PostsRepository postsRepository,
+			UsersService usersService) {
+		this.commentRepository = commentRepository;
+		this.postsRepository = postsRepository;
+	}
 
-    /**
-     * コメント登録処理
-     * 投稿詳細画面から送信されたコメントを保存する
-     */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createComment(
-    		/** HTMLから投稿IDとコメント内容を受け取る **/
-            @RequestParam Long postId, // 投稿ID
-            @RequestParam String text, // コメント内容
-            HttpSession session) {
+	@Autowired
+	private PostsService postsService;
 
-        /** セッションからログインしているユーザー情報を取得 */
-        Users loginUser = (Users) session.getAttribute("loginUser");
+	@Autowired
+	private UsersService usersService;
 
-        /** 未ログインの場合はログイン画面へ戻す */
-        if (loginUser == null) {
-            return "redirect:/";
-        }
+	/**
+	 * コメント登録処理 投稿詳細画面から送信されたコメントを保存する
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String createComment(
+			/** HTMLから投稿IDとコメント内容を受け取る **/
+			@RequestParam Long postId, // 投稿ID
+			@RequestParam String text, // コメント内容
+			HttpSession session) {
 
-        /** コメント対象の投稿を取得 (postId を使って、投稿を検索す) */
-        Posts post = postsRepository.findById(postId).orElse(null);
+		/** セッションからログインしているユーザー情報を取得 */
+		Users loginUser = (Users) session.getAttribute("loginUser");
 
-        /** 投稿が存在しない場合は一覧画面へ戻す */
-        if (post == null) {
-            return "redirect:/title";
-        }
+		/** 未ログインの場合はログイン画面へ戻す */
+		if (loginUser == null) {
+			return "redirect:/";
+		}
 
-        /** コメントオブジェクト生成 */
-        Comments comment = new Comments();
+		/** コメント対象の投稿を取得 (postId を使って、投稿を検索す) */
+		Posts post = postsRepository.findById(postId).orElse(null);
 
-        /** コメント情報を設定 */
-        comment.setPost(post);                   // 投稿情報
-        comment.setUser(loginUser);              // コメント投稿者
-        comment.setText(text);                   // コメント本文
-        comment.setCreatedAt(LocalDateTime.now());// 作成日時
-        comment.setUpdatedAt(LocalDateTime.now());// 更新日時
+		/** 投稿が存在しない場合は一覧画面へ戻す */
+		if (post == null) {
+			return "redirect:/title";
+		}
 
-        /** コメントをDBへ保存 */
-        commentRepository.save(comment);
+		/** コメントオブジェクト生成 */
+		Comments comment = new Comments();
 
-        /** 投稿詳細画面へ戻る */
-        return "redirect:/body/" + postId;
-    }
+		/** コメント情報を設定 */
+		comment.setPost(post); // 投稿情報
+		comment.setUser(loginUser); // コメント投稿者
+		comment.setText(text); // コメント本文
+		comment.setCreatedAt(LocalDateTime.now());// 作成日時
+		comment.setUpdatedAt(LocalDateTime.now());// 更新日時
 
-    /**
-     * コメント削除確認画面表示
-     * 削除前に確認メッセージを表示する
-     */
-    @RequestMapping(value = "/delete/{id}/confirm", method = RequestMethod.GET)
-    public String deleteConfirm(
-    		/** URLからコメントIDを受け取る **/
-            @PathVariable int id, // コメントID
-            Model model,
-            HttpSession session) {
+		/** コメントをDBへ保存 */
+		commentRepository.save(comment);
 
-        /** ログインユーザーを確認する */
-        Users loginUser = (Users) session.getAttribute("loginUser");
+		/** 投稿詳細画面へ戻る */
+		return "redirect:/body/" + postId;
+	}
 
-        /** 未ログインならログイン画面へ戻す */
-        if (loginUser == null) {
-            return "redirect:/";
-        }
+	/**
+	 * コメント削除確認画面表示 削除前に確認メッセージを表示する
+	 */
+	@RequestMapping(value = "/delete/{id}/confirm", method = RequestMethod.GET)
+	public String deleteConfirm(
+			/** URLからコメントIDを受け取る **/
+			@PathVariable int id, // コメントID
+			Model model, HttpSession session) {
 
-        /** 削除したいコメントを探す */
-        Comments comment = commentRepository.findById(id).orElse(null);
+		/** ログインユーザーを確認する */
+		Users loginUser = (Users) session.getAttribute("loginUser");
 
-        /** コメントが存在しない場合一覧画面へ戻す */
-        if (comment == null) {
-            return "redirect:/title";
-        }
+		/** 未ログインならログイン画面へ戻す */
+		if (loginUser == null) {
+			return "redirect:/";
+		}
 
-        /** 画面へデータを渡す */
-        model.addAttribute("mode", "deleteComment");
-        model.addAttribute("comment", comment);
-        model.addAttribute("post", comment.getPost());
+		/** 削除したいコメントを探す */
+		Comments comment = commentRepository.findById(id).orElse(null);
 
-        /** 削除確認画面表示(form.html) */
-        return "form";
-    }
+		/** コメントが存在しない場合一覧画面へ戻す */
+		if (comment == null) {
+			return "redirect:/title";
+		}
 
-    /**
-     * コメント削除処理
-     * 投稿者本人または管理者のみ削除可能
-     */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public String deleteComment(
-            @PathVariable int id,
-            HttpSession session) {
+		/** 画面へデータを渡す */
+		model.addAttribute("mode", "deleteComment");
+		model.addAttribute("comment", comment);
+		model.addAttribute("post", comment.getPost());
 
-        /** ログインユーザーを確認する */
-        Users loginUser = (Users) session.getAttribute("loginUser");
+		/** 削除確認画面表示(form.html) */
+		return "form";
+	}
 
-        /** 未ログインならログイン画面へ戻す */
-        if (loginUser == null) {
-            return "redirect:/";
-        }
+	/**
+	 * コメント削除処理 投稿者本人または管理者のみ削除可能
+	 */
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+	public String deleteComment(@PathVariable int id, HttpSession session) {
 
-        /** 削除対象コメント取得/探す */
-        Comments comment = commentRepository.findById(id).orElse(null);
+		/** ログインユーザーを確認する */
+		Users loginUser = (Users) session.getAttribute("loginUser");
 
-        /** コメントが存在しない場合一覧画面へ戻す */
-        if (comment == null) {
-            return "redirect:/title";
-        }
+		/** 未ログインならログイン画面へ戻す */
+		if (loginUser == null) {
+			return "redirect:/";
+		}
 
-        /** 削除後に戻るため投稿IDを取得 */
-        int postId = comment.getPost().getId();
+		/** 削除対象コメント取得/探す */
+		Comments comment = commentRepository.findById(id).orElse(null);
 
-        /**
-         * コメント投稿者本人
-         * または管理者(ADMIN)
-         * の場合のみ削除を許可
-         */
-        if (comment.getUser().getId() == (loginUser.getId())
-                || "ADMIN".equals(loginUser.getRole())) {
+		/** コメントが存在しない場合一覧画面へ戻す */
+		if (comment == null) {
+			return "redirect:/title";
+		}
 
-            /** コメント削除 */
-            commentRepository.deleteById(id);
-        }
+		/** 削除後に戻るため投稿IDを取得 */
+		int postId = comment.getPost().getId();
 
-        /** 投稿詳細画面へ戻る */
-        return "redirect:/body/" + postId;
-    }
-    
-    // コメント入力画面表示
- 	@RequestMapping(value = "/new", method = RequestMethod.GET)
- 	public String commentForm(@RequestParam Long postId,
- 							  Model model,
- 							  HttpSession session) {
+		/**
+		 * コメント投稿者本人 または管理者(ADMIN) の場合のみ削除を許可
+		 */
+		if (comment.getUser().getId() == (loginUser.getId()) || "ADMIN".equals(loginUser.getRole())) {
 
- 		Users loginUser = (Users) session.getAttribute("loginUser");
+			/** コメント削除 */
+			commentRepository.deleteById(id);
+		}
 
- 		if (loginUser == null) {
- 			return "redirect:/";
- 		}
+		/** 投稿詳細画面へ戻る */
+		return "redirect:/body/" + postId;
+	}
 
- 		Posts post = postsRepository.findById(postId).orElse(null);
+	// コメント入力画面表示
+	@RequestMapping(value = "/new/{id}", method = RequestMethod.GET)
+	public String commentForm(@RequestParam Long postId, Model model, HttpSession session) {
 
- 		if (post == null) {
- 			return "redirect:/title";
- 		}
+		Users loginUser = (Users) session.getAttribute("loginUser");
 
- 		model.addAttribute("mode", "comment");
- 		model.addAttribute("post", post);
- 		model.addAttribute("loginUser", loginUser);
+		if (loginUser == null) {
+			return "redirect:/";
+		}
 
- 		return "form";
- 	}
-    
-    
-    
-    
-    
+		Posts post = postsRepository.findById(postId).orElse(null);
+
+		if (post == null) {
+			return "redirect:/title";
+		}
+
+		model.addAttribute("mode", "comment");
+		model.addAttribute("post", post);
+		model.addAttribute("loginUser", loginUser);
+
+		return "form";
+	}
 }
