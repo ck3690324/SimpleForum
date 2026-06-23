@@ -98,7 +98,7 @@
 									<!-- 削除ボタン -->
 									<td class="align-middle">
 										<!-- 自分以外のユーザーのみ削除可能 --> 
-										<a th:if="${user.id != loginUser.id}" th:href="@{/admin/user/delete/{id}(id=${user.id})}"
+										<a th:if="${!user.id.equals(loginUser.id)}" th:href="@{/admin/user/delete/{id}(id=${user.id})}"
 										class="btn btn-sm btn-outline-danger" onclick="return confirm('このユーザーを削除しますか？');"> 削除 </a> 
 										<!-- 自分自身 -->
 										<span th:if="${user.id == loginUser.id}" class="badge bg-primary"> 自分 </span>
