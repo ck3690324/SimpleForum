@@ -30,7 +30,7 @@
 				<div class="text-end">
 					<div class="bg-white text-dark border rounded px-4 py-1" th:text="${loginUser.userName}">ユーザーID</div>
 					<a href="/logout" class="btn btn-light btn-sm w-100 mt-1">ログアウト</a>
-				</div>
+				</div>		
 			</div>
 		</div>
 
@@ -89,7 +89,7 @@
 							<form method="post" th:action="@{/comments/delete/{id}(id=${comment.id})}">
 								<!-- コメント作成者本人または管理者のみ表示 -->
 								<button
-									th:if="${comment.user.id == loginUser.id || loginUser.role == 'ADMIN'}"
+									th:if="${comment.user.id == loginUser.id || loginUser.role == T(com.example.simpleforum.model.Role).ADMIN}"
 									type="submit" class="btn btn-sm btn-outline-danger"
 									onclick="return confirm('このコメントを削除しますか？');">削除
 								</button>
@@ -108,7 +108,7 @@
 
 			<!-- タイトルページへ戻る -->
 			<div class="text-center">
-				<a href="/title" class="btn btn-secondary px-4">タイトルページへ</a>
+				<a href="/posts" class="btn btn-secondary px-4">投稿一覧へ</a>
 			</div>
 
 		</div>

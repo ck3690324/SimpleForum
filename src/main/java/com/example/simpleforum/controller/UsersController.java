@@ -11,6 +11,7 @@ import com.example.simpleforum.repository.UsersRepository;
 import com.example.simpleforum.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsersController {
@@ -46,7 +47,7 @@ public class UsersController {
 			ModelAndView mav, 
 			@RequestParam(value="error", required=false) String error, 
 			@RequestParam(value = "logout", required = false) String logout,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
 		
 		// 既にログイン中
 		if (request.getRemoteUser() != null) {

@@ -1,8 +1,13 @@
 package com.example.simpleforum.config;
 
 
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,32 +58,32 @@ public class SecurityConfig {
         return http.build();
     }
 	
-//	@Autowired
-//	private JdbcTemplate jdbcTemplate;
-//	
-//	/**
-//	 * ダミーアカウント作成
-//	 * @param passwordEncoder エンコーダー
-//	 * @return ダミーアカウント / エラーメッセージ
-//	 */
-//	@Bean
-//	public CommandLineRunner initDummyAccounts(PasswordEncoder passwordEncoder) {
-//		return args -> {
-//			String countSql = "SELECT COUNT(*) FROM users";
-//			Integer userCount = jdbcTemplate.queryForObject(countSql, Integer.class);
-//			
-//			if (userCount != null && userCount == 0) {
-//				String insertSql = "INSERT INTO users (id, user_name, password, role, created_at) VALUES (?, ?, ?, ?, ?)";
-//				
-//				jdbcTemplate.update(insertSql, 1, "admin", passwordEncoder.encode("pass"), "ADMIN", LocalDateTime.now());
-//				jdbcTemplate.update(insertSql, 2, "user", passwordEncoder.encode("pass"), "USER", LocalDateTime.now());
-//				jdbcTemplate.update(insertSql, 3, "test", passwordEncoder.encode("pass"), "USER", LocalDateTime.now());
-//				
-//				System.out.println("アカウントを作成しました。");
-//			}
-//			else {
-//				System.out.println("アカウント作成しませんでした");
-//			}
-//		};
-//	}
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
+	/**
+	 * ダミーアカウント作成
+	 * @param passwordEncoder エンコーダー
+	 * @return ダミーアカウント / エラーメッセージ
+	 */
+	@Bean
+	public CommandLineRunner initDummyAccounts(PasswordEncoder passwordEncoder) {
+		return args -> {
+			String countSql = "SELECT COUNT(*) FROM users";
+			Integer userCount = jdbcTemplate.queryForObject(countSql, Integer.class);
+			
+			if (userCount != null && userCount == 0) {
+				String insertSql = "INSERT INTO users (id, user_name, password, role, created_at) VALUES (?, ?, ?, ?, ?)";
+				
+				jdbcTemplate.update(insertSql, 1, "admin", passwordEncoder.encode("pass"), "ADMIN", LocalDateTime.now());
+				jdbcTemplate.update(insertSql, 2, "user", passwordEncoder.encode("pass"), "USER", LocalDateTime.now());
+				jdbcTemplate.update(insertSql, 3, "test", passwordEncoder.encode("pass"), "USER", LocalDateTime.now());
+				
+				System.out.println("アカウントを作成しました。");
+			}
+			else {
+				System.out.println("アカウント作成しませんでした");
+			}
+		};
+	}
 }
