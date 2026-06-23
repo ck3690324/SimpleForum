@@ -96,10 +96,11 @@ public class PostsService {
 
 	/**
 	 * 編集権限チェック
+	 * (public→コントローラー側が利用できるように)
 	 * @param post 投稿
 	 * @param loginUser 現在のユーザー情報
 	 */
-	private void checkAuthor(Posts post, Users loginUser) {
+	public void checkAuthor(Posts post, Users loginUser) {
 		boolean isAuthor = post.getUser() != null && post.getUser().getId() == loginUser.getId();
 		boolean isAdmin = loginUser.getRole() == Role.ADMIN;
 		
