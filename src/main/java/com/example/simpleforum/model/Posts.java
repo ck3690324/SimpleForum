@@ -1,6 +1,7 @@
 package com.example.simpleforum.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,6 +34,9 @@ public class Posts {
 	
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
+	
+	@OneToMany(mappedBy = "post")
+	private List<Comments> comments;
 	
 	// コンストラクタ
 	public Posts() {}
@@ -92,6 +97,14 @@ public class Posts {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	public List<Comments> getComments() {
+	    return comments;
+	}
+
+	public void setComments(List<Comments> comments) {
+	    this.comments = comments;
 	}
 
 	// toString
