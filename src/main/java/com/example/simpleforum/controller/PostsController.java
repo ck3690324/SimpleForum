@@ -123,8 +123,13 @@ public class PostsController {
 			mav.setViewName("form");
 			
 			// 表示用オブジェクト
-			mav.addObject("showTitle", true);
 			mav.addObject("loginUser", author);
+	        mav.addObject("data", null);
+	        mav.addObject("readonly", false);
+	        mav.addObject("showTitle", true);
+	        mav.addObject("formAction", "/posts/new");
+	        mav.addObject("submitLabel", "投稿する");
+	        mav.addObject("cancelHref", "/posts");
 	        mav.addObject("msg", e.getMessage());
 		}
 		// ビューを返す
