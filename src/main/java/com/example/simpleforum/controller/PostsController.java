@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.simpleforum.model.Posts;
 import com.example.simpleforum.model.Role;
 import com.example.simpleforum.model.Users;
+import com.example.simpleforum.service.CommentsService;
 import com.example.simpleforum.service.PostsService;
 import com.example.simpleforum.service.UsersService;
 
@@ -23,10 +24,13 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class PostsController {
 	@Autowired
+	private UsersService usersService;
+	
+	@Autowired
 	private PostsService postsService;
 	
 	@Autowired
-	private UsersService usersService;
+	private CommentsService commentsService;
 	
 	/**
 	 * 投稿一覧ページ遷移処理
@@ -79,6 +83,7 @@ public class PostsController {
 		mav.addObject("formAction", "/posts/new");
 		
 		// 表示用オブジェクト
+		mav.addObject("showTitle", true);
 		mav.addObject("submitLabel", "投稿する");
 		mav.addObject("cancelHref", "/posts");
 		return mav;
@@ -118,6 +123,7 @@ public class PostsController {
 			mav.setViewName("form");
 			
 			// 表示用オブジェクト
+			mav.addObject("showTitle", true);
 			mav.addObject("loginUser", author);
 	        mav.addObject("msg", e.getMessage());
 		}
@@ -145,10 +151,11 @@ public class PostsController {
 		// 投稿内容取得
 		try {
 			Posts post = postsService.findById(id);
-			mav.setViewName("body");
+			mav.setViewName("detail");
 			mav.addObject("title", post.getTitle());
-			//mav.addObject("data", post);
-			 mav.addObject("post", post);
+			mav.addObject("data", post);
+//			 mav.addObject("post", post);
+			mav.addObject("comments", commentsService.findByPostId(id));
 
 			// 編集権限確認
 			boolean canEdit = (
@@ -198,10 +205,10 @@ public class PostsController {
 			// 表示用オブジェクト
 			mav.addObject("data", post);
 			mav.addObject("title", "投稿編集");
+			mav.addObject("showTitle", true);
 			mav.addObject("formAction", "/posts/edit/" + id);
 			mav.addObject("submitLabel", "更新する");
 			mav.addObject("cancelHref", "/posts/" + id);
-
 		}
 		// 例外(見つからない)発生した場合に一覧ページにリダイレクト
 		catch (NoSuchElementException e) {
@@ -257,7 +264,8 @@ public class PostsController {
 
 			// 表示用オブジェクト
 			mav.addObject("title", "投稿編集");
-			mav.addObject("formAction", "/posts/" + id + "edit/");
+			mav.addObject("showTitle", true);
+			mav.addObject("formAction", "/posts/" + id + "/edit");
 			mav.addObject("submitLabel", "更新する");
 			mav.addObject("cancelHref", "/posts/" + id);
 			mav.addObject("msg", e.getMessage());
@@ -295,6 +303,7 @@ public class PostsController {
 			// 表示用オブジェクト
 			mav.addObject("data", post);
 			mav.addObject("title", "投稿削除確認");
+			mav.addObject("showTitle", true);
 			mav.addObject("readonly", true);
 			mav.addObject("formAction", "/posts/delete/" + id);
 			mav.addObject("submitLabel", "削除する");
