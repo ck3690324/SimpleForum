@@ -17,8 +17,22 @@
 				th:text="${title}"></a>
 		</h1>
 		<div class="text-end">
-			<span th:text="${loginUser.userName}"></span> <span
+			<!-- 管理者の場合：ユーザー名を押すと管理者画面へ -->
+			<a th:if="${loginUser.role == T(com.example.simpleforum.model.Role).ADMIN}"
+				href="/admin/users" class="text-decoration-none text-dark"> <span
+				th:text="${loginUser.userName}">ユーザーID</span>
+				<span
 				class="badge bg-secondary" th:text="${loginUser.role}"></span>
+			</a>
+
+			<!-- 一般ユーザーの場合：クリックできない表示 -->
+			<div
+				th:if="${loginUser.role != T(com.example.simpleforum.model.Role).ADMIN}"
+				class="text-decoration-none text-dark">
+				<span th:text="${loginUser.userName}">ユーザーID</span>
+				<span
+				class="badge bg-secondary" th:text="${loginUser.role}"></span>
+			</div>
 			<form th:action="@{/logout}" method="post" class="d-inline">
 				<button type="submit" class="btn btn-sm btn-outline-danger">ログアウト</button>
 			</form>

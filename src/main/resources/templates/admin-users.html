@@ -45,7 +45,9 @@
 						<!-- ログインユーザー名表示 -->
 						<div class="fw-bold" th:text="${loginUser.userName}">ユーザーID</div>
 						<!-- ログアウトボタン -->
-						<a href="/logout" class="btn btn-outline-light btn-sm mt-2">ログアウト </a>
+						<form th:action="@{/logout}" method="post">
+							<button type="submit" class="btn btn-outline-light btn-sm mt-2">ログアウト</button>
+						</form>
 					</div>
 
 				</div>
@@ -114,7 +116,7 @@
 
 				<!-- ===== 戻るボタン ===== -->
 				<div class="text-center mt-4">
-					<a href="/title" class="btn btn-secondary px-4"> タイトルページへ </a>
+					<a href="/posts" class="btn btn-secondary px-4"> タイトルページへ </a>
 				</div>
 
 			</div>
