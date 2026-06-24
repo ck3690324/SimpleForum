@@ -38,6 +38,8 @@ public class Posts {
 	@OneToMany(mappedBy = "post")
 	private List<Comments> comments;
 	
+	
+	
 	// コンストラクタ
 	public Posts() {}
 	
@@ -72,6 +74,10 @@ public class Posts {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
+	}
+	
+	public int getCommentCount() {
+	    return comments == null ? 0 : comments.size();
 	}
 
 	// セッター

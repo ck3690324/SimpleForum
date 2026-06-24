@@ -59,7 +59,8 @@
 						        <tbody>
 						            <tr th:each="post : ${data}">
 						                <td>
-						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
+						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
+						                    <span th:text="${post.title}"></span> (<span th:text="${post.commentCount}"></span>)</a>
 						                </td>
 						                <td th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
 						                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
