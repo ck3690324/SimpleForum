@@ -31,7 +31,7 @@
 	<!-- 表示領域(フォーム) -->
 	<form th:action="${formAction}" method="post">
 
-		<div class="mb-3">
+		<div class="mb-3" th:if="${showTitle}">
 			<label class="form-label">タイトル</label>
 
 			<!-- 作成・編集用パーツ -->
@@ -45,7 +45,7 @@
 		</div>
 
 		<div class="mb-3">
-			<label class="form-label">本文</label>
+			<label class="form-label" th:text="${showTitle} ? '本文' : 'コメント'"></label>
 
 			<!-- 作成・編集用パーツ -->
 			<textarea th:if="${!readonly}" name="text" class="form-control"
