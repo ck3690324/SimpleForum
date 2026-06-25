@@ -37,9 +37,7 @@ public class Posts {
 	
 	@OneToMany(mappedBy = "post")
 	private List<Comments> comments;
-	
-	
-	
+
 	// コンストラクタ
 	public Posts() {}
 	
@@ -75,10 +73,6 @@ public class Posts {
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
-	
-	public int getCommentCount() {
-	    return comments == null ? 0 : comments.size();
-	}
 
 	// セッター
 	public void setId(int id) {
@@ -113,6 +107,21 @@ public class Posts {
 	    this.comments = comments;
 	}
 
+	// コメント数を取得
+	public int getCommentCount() {
+		return comments == null ? 0 : comments.size();
+	}
+	
+	// 最新コメントの作成時間を取得
+	public LocalDateTime getLatestCommentTime() {
+		// コメントない場合は投稿の作成時間
+		if (comments == null || comments.isEmpty()) {
+			return createdAt;
+		}
+		// コメントがあれば取得し、比較してから新しい方を返す
+		return comments.stream().map(Comments::getCreatedAt).max(LocalDateTime::compareTo).orElse(createdAt);
+	}
+	
 	// toString
 	@Override
 	public String toString() {

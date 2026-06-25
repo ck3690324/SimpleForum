@@ -1,6 +1,7 @@
 package com.example.simpleforum.service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -39,10 +40,20 @@ public class PostsService {
 	
 	/**
 	 * 投稿全件取得
+	 * コメント新着時間順でソートする
 	 * @return
 	 */
 	public List<Posts> findAll() {
-		return postsRepository.findAllByOrderByCreatedAtDesc();
+//		return postsRepository.findAllByOrderByCreatedAtDesc();
+		
+		// 投稿全件取得
+		List<Posts> posts = postsRepository.findAllByOrderByCreatedAtDesc();
+		
+		// Posts.javaのメソッドを使って、コメント時間順でソートする
+		posts.sort(Comparator.comparing(Posts::getLatestCommentTime).reversed());
+		
+		// 並び直したリストを返す
+		return posts;
 	}
 	
 	/**
