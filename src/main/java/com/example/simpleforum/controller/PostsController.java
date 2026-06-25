@@ -54,7 +54,7 @@ public class PostsController {
 		// 検索キーワードがある場合は検索、ない場合は全件表示
 		List<Posts> list = postsService.search(keyword);
 		mav.addObject("data", list);
-		mav.addObject("keyword", keyword);
+//		mav.addObject("keyword", keyword);
 		
 //		// 投稿全件取得
 //		List<Posts> list = postsService.findAll();

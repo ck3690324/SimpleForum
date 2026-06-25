@@ -130,6 +130,6 @@ public class PostsService {
 		if (keyword == null || keyword.isBlank()) {
 			return findAll();
 		}
-		return postsRepository.findByTitleContainingOrTextContainingOrderByCreatedAtDesc(keyword, keyword);
+		return postsRepository.findByTitleContainingOrderByCreatedAtDesc(keyword);
 	}
 }
