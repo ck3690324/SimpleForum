@@ -59,20 +59,22 @@
 							<div th:if="${readonly}" class="form-control-plaintext border-bottom"
 								th:text="${data.title}"></div>
 						</div>
-				
-						<div class="mb-3">
-							<label class="form-label" th:text="${showTitle} ? '本文' : 'コメント'"></label>
-				
-							<!-- 作成・編集用パーツ -->
-							<textarea th:if="${!readonly}" name="text" class="form-control"
-								rows="8" th:text="${data != null ? data.text : ''}"></textarea>
-				
-							<!-- 削除確認用パーツ -->
-							<div th:if="${readonly}" class="form-control-plaintext border-bottom"
-								style="white-space: pre-wrap;" th:text="${data.text}"></div>
-						</div>
-				
-						<!-- 操作ボタン -->
+
+					<div class="mb-3">
+
+						<label class="form-label" th:text="${showTitle} ? '本文' : 'コメント'"></label>
+
+						<!-- 作成・編集用パーツ -->
+						<textarea th:if="${!readonly}" name="text" class="form-control"
+							rows="8" th:text="${data != null ? data.text : ''}"></textarea>
+
+						<!-- 削除確認用パーツ -->
+						<div th:if="${readonly}"
+							class="form-control-plaintext border-bottom"
+							style="white-space: pre-wrap;" th:text="${data.text}"></div>
+					</div>
+
+					<!-- 操作ボタン -->
 						<button type="submit" class="btn btn-primary" th:text="${submitLabel}"></button>
 						<a th:href="${cancelHref}" class="btn btn-danger">キャンセル</a>
 					</form>

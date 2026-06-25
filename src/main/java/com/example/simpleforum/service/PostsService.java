@@ -30,9 +30,9 @@ public class PostsService {
 		if (title.isBlank() || text.isBlank()) {
 			throw new IllegalArgumentException("タイトルと本文を入力してください");
 		}
-		
+		String category = autoCategory(title, text);
 		// コンストラクタを使ってインスタンスを生成
-		Posts post = new Posts(title, text, author, LocalDateTime.now(), LocalDateTime.now());
+		Posts post = new Posts(category, title, text, author, LocalDateTime.now(), LocalDateTime.now());
 		
 		// DB登録処理
 		return postsRepository.save(post);
@@ -84,8 +84,10 @@ public class PostsService {
 		
 		// 編集権限チェック
 		checkAuthor(post, loginUser);
+		String category = autoCategory(title, text);
 		
 		// セッターを使って内容を変更
+		post.setCategory(category);
 		post.setTitle(title);
 		post.setText(text);
 		post.setUpdatedAt(LocalDateTime.now());
@@ -131,5 +133,46 @@ public class PostsService {
 			return findAll();
 		}
 		return postsRepository.findByTitleContainingOrderByCreatedAtDesc(keyword);
+	}
+	
+	/**
+	 * 分類
+	 * @param title
+	 * @param text
+	 * @return
+	 */
+	private String autoCategory(String title, String text) {
+
+	    String content = title + " " + text.toLowerCase();
+	    if (content.contains("経済") ||
+	            content.contains("円") ||
+	            content.contains("ドル") ||
+	            content.contains("株") ||
+	            content.contains("株価") ||
+	            content.contains("投資") ||
+	            content.contains("為替") ||
+	            content.contains("物価") ||
+	            content.contains("景気") ||
+	            content.contains("インフレ")) {
+	            return "経済";
+	        }
+	    
+	    if (content.contains("エラー") ||
+	        content.contains("教えて") ||
+	        content.contains("できない") ||
+	        content.contains("？") ||
+	        content.contains("?")) {
+	        return "質問";
+	    }
+
+	    if (content.contains("共有") ||
+	        content.contains("手順") ||
+	        content.contains("方法") ||
+	        content.contains("Git") ||
+	        content.contains("Spring")) {
+	        return "共有";
+	    }
+
+	    return "雑談";
 	}
 }

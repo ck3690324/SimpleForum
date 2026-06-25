@@ -67,6 +67,7 @@
 						            <tr th:each="post : ${data}">
 						                <td>
 						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
+						                    	【<span th:text="${post.category}"></span>】
 						                    	<span th:text="${post.title}"></span>
         										<span th:if="${post.commentCount > 0}">(<span th:text="${post.commentCount}"></span>)</span>
 						                    </a>
