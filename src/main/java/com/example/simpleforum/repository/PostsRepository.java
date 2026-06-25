@@ -16,4 +16,7 @@ public interface PostsRepository extends JpaRepository<Posts, Integer> {
 	
 	// 投稿削除
 	void deleteById(long id);
+	
+	// タイトルまたは本文で検索（作成日時の新しい順）
+	List<Posts> findByTitleContainingOrTextContainingOrderByCreatedAtDesc(String title, String text);
 }

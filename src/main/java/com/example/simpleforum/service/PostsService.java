@@ -120,4 +120,16 @@ public class PostsService {
 			throw new SecurityException("この投稿を編集・削除することが出来ません。");
 		}
 	}
+	
+	/**
+	 * 投稿検索
+	 * @param keyword
+	 * @return
+	 */
+	public List<Posts> search(String keyword) {
+		if (keyword == null || keyword.isBlank()) {
+			return findAll();
+		}
+		return postsRepository.findByTitleContainingOrTextContainingOrderByCreatedAtDesc(keyword, keyword);
+	}
 }
