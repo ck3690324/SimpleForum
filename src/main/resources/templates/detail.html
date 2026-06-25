@@ -94,7 +94,7 @@
 										<span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
 									</p>
 									<div class="d-flex gap-2"
-										th:if="${comment.user != null && (comment.user.id.equals(loginUser.id) || loginUser.role.name() == 'ADMIN')}">
+										th:if="${(comment.user != null && comment.user.id.equals(loginUser.id)) || loginUser.role.name() == 'ADMIN'}">
 										<a th:href="@{/comments/edit/{id}(id=${comment.id})}" class="btn btn-sm btn-outline-secondary">編集</a>
 										<a th:href="@{/comments/delete/{id}(id=${comment.id})}" class="btn btn-sm btn-outline-danger">削除</a>
 									</div>

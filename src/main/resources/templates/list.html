@@ -112,7 +112,7 @@
 						                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
 						                <td>
 						                    <div class="d-flex gap-2"
-						                         th:if="${post.user != null && (post.user.id.equals(loginUser.id) || loginUser.role.name() == 'ADMIN')}">
+						                         th:if="${(post.user != null && post.user.id.equals(loginUser.id)) || loginUser.role.name() == 'ADMIN'}">
 						                        <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-sm btn-outline-secondary">編集</a>
 						                        <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-sm btn-outline-danger">削除</a>
 						                    </div>
