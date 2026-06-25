@@ -80,7 +80,7 @@
 							<!-- ユーザー一覧表示 -->
 							<tbody>
 								<!-- ユーザーを1件ずつ表示 -->
-								<tr th:each="user : ${users}">
+								<tr th:each="user : ${users}" style="height: 50px;">
 									<!-- ユーザーID -->
 									<td class="align-middle" th:text="${user.id}"></td>
 									<!-- ユーザー名 -->
@@ -95,15 +95,14 @@
 									</td>
 
 									<!-- 登録日時 -->
-									<td class="align-middle" th:text="${user.createdAt}"></td>
+									<td class="align-middle" th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
 
 									<!-- 削除ボタン -->
 									<td class="align-middle">
 										<!-- 自分以外のユーザーのみ削除可能 --> 
-										<a th:if="${!user.id.equals(loginUser.id)}" th:href="@{/admin/user/delete/{id}(id=${user.id})}"
-										class="btn btn-sm btn-outline-danger" onclick="return confirm('このユーザーを削除しますか？');"> 削除 </a> 
+										<a th:if="${!user.id.equals(loginUser.id)}" th:href="@{/admin/user/delete/{id}(id=${user.id})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('このユーザーを削除しますか？');"> 削除 </a> 
 										<!-- 自分自身 -->
-										<span th:if="${user.id == loginUser.id}" class="badge bg-primary"> 自分 </span>
+										<span th:if="${user.id == loginUser.id}" class="btn btn-sm btn-primary"> 自分 </span>
 									</td>
 								</tr>
 							</tbody>
