@@ -1,6 +1,7 @@
 package com.example.simpleforum.service;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,24 @@ public class UsersService implements UserDetailsService {
     	
     	// 登録処理
     	return usersRepository.save(user);
+    }
+    
+    /**
+     * ユーザー削除
+     * @param id ユーザーID
+     */
+    public void delete(Long id) {
+    	Users user = findById(id);
+    	usersRepository.delete(user);
+    }
+    
+    /**
+     * ユーザーID検索
+     * @param id ユーザーID
+     * @return
+     */
+    public Users findById(Long id) {
+    	return usersRepository.findById(id).orElseThrow(() -> new NoSuchElementException("ユーザーが見つかりません"));
     }
     
     /**

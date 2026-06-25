@@ -72,7 +72,7 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/admin/user/delete/{id}", method = RequestMethod.GET)
 	public String deleteUser(
-			@PathVariable int id, 
+			@PathVariable Long id, 
 			HttpSession session,
 			HttpServletRequest request) {
 
@@ -94,7 +94,8 @@ public class AdminController {
 		if (loginUser.getId() != id) {
 
 			/** 指定されたユーザーを削除 */
-			usersRepository.deleteById(id);
+//			usersRepository.deleteById(id);
+			usersService.delete(id);
 		}
 		
 		/** ユーザー一覧画面へ戻る */
