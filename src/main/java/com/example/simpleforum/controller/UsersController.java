@@ -86,9 +86,6 @@ public class UsersController {
 			@RequestParam("username") String username,
 			@RequestParam("password") String password,
 			HttpServletRequest request) {
-		
-		// ページタイトル(エラー時)
-		mav.addObject("title", "シンプルフォーラム | 新規登録");
 
 		// 登録+ログイン
 		try {
@@ -104,6 +101,7 @@ public class UsersController {
 		// 重複・空欄チェック(処理はUserService側)
 		catch (IllegalArgumentException e) {
 	        mav.setViewName("login");
+	        mav.addObject("title", "シンプルフォーラム | 新規登録");
 	        mav.addObject("msg", e.getMessage());
 		}
 		// 失敗パターン
@@ -113,6 +111,7 @@ public class UsersController {
 			
 			// 表示部分
 			mav.setViewName("login");
+			mav.addObject("title", "シンプルフォーラム | 新規登録");
 			mav.addObject("msg", "ログインしてください");
 		}
 		// ビューを返す
