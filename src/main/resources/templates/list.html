@@ -64,16 +64,16 @@
 						            </tr>
 						        </thead>
 						        <tbody>
-						            <tr th:each="post : ${data}">
-						                <td>
+						            <tr th:each="post : ${data}" style="height: 50px;">
+						                <td class="align-middle">
 						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
 						                    	<span th:text="${post.title}"></span>
         										<span th:if="${post.commentCount > 0}">(<span th:text="${post.commentCount}"></span>)</span>
 						                    </a>
 						                </td>
-						                <td th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
-						                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-						                <td>
+						                <td class="align-middle" th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
+						                <td class="align-middle" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+						                <td class="align-middle">
 						                    <div class="d-flex gap-2"
 						                         th:if="${(post.user != null && post.user.id.equals(loginUser.id)) || loginUser.role.name() == 'ADMIN'}">
 						                        <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-sm btn-outline-secondary">編集</a>
