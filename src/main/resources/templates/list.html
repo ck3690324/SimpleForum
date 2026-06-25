@@ -47,6 +47,7 @@
 						<a th:href="@{/posts/new}" class="btn btn-primary btn-sm">新規投稿</a>
 					</div>
 					<div class="card-body">
+<<<<<<< HEAD
 
 						<form th:action="@{/posts}" method="get" class="d-flex mb-3">
 							<input type="text" name="keyword" class="form-control me-2"
@@ -89,6 +90,39 @@
 						</table>
 					</div>
 				</div>
+=======
+						    <table class="table table-striped">
+						        <thead>
+						            <tr>
+						                <th>タイトル</th>
+						                <th>投稿者</th>
+						                <th>作成日時</th>
+						                <th>操作</th>
+						            </tr>
+						        </thead>
+						        <tbody>
+						            <tr th:each="post : ${data}">
+						                <td>
+						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
+						                    	<span th:text="${post.title}"></span>
+        										<span th:if="${post.commentCount > 0}">(<span th:text="${post.commentCount}"></span>)</span>
+						                    </a>
+						                </td>
+						                <td th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
+						                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+						                <td>
+						                    <div class="d-flex gap-2"
+						                         th:if="${post.user != null && (post.user.id.equals(loginUser.id) || loginUser.role.name() == 'ADMIN')}">
+						                        <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-sm btn-outline-secondary">編集</a>
+						                        <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-sm btn-outline-danger">削除</a>
+						                    </div>
+						                </td>
+						            </tr>
+						        </tbody>
+						    </table>
+						</div>
+				    </div>
+>>>>>>> main
 				</div>
 			</div>
 		</div>
