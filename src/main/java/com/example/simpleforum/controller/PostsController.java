@@ -41,19 +41,28 @@ public class PostsController {
 	@GetMapping("/posts")
 	public ModelAndView index(
 			ModelAndView mav,
-			HttpServletRequest request, HttpSession session) {
+			HttpServletRequest request, HttpSession session,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 		
 		mav.setViewName("list");
 		mav.addObject("title", "投稿一覧");
-		session.setAttribute("loginUser", getLoginUser(request));
 		
-		// 投稿全件取得
-		List<Posts> list = postsService.findAll();
+		Users loginUser = getLoginUser(request);
+		session.setAttribute("loginUser", loginUser);
+		mav.addObject("loginUser", loginUser);
+		
+		// 検索キーワードがある場合は検索、ない場合は全件表示
+		List<Posts> list = postsService.search(keyword);
 		mav.addObject("data", list);
+		mav.addObject("keyword", keyword);
 		
-		// ユーザー情報
-		mav.addObject("loginUser", getLoginUser(request));
-		
+//		// 投稿全件取得
+//		List<Posts> list = postsService.findAll();
+//		mav.addObject("data", list);
+//		
+//		// ユーザー情報
+//		mav.addObject("loginUser", getLoginUser(request));
+				
 		// ビューを返す
 		return mav;
 	}

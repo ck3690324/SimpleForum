@@ -40,42 +40,55 @@
 					</div>
 				</div>
 				
-				<div class="card-body p-4">
+				<div class="card-body p-4">		
 				    <div class="card mb-4">
 					<div class="card-header d-flex justify-content-between align-items-center">
 						<h4 class="mb-0 text-decoration-none" th:text="${title}"></h4>
 						<a th:href="@{/posts/new}" class="btn btn-primary btn-sm">新規投稿</a>
 					</div>
 					<div class="card-body">
-						    <table class="table table-striped">
-						        <thead>
-						            <tr>
-						                <th>タイトル</th>
-						                <th>投稿者</th>
-						                <th>作成日時</th>
-						                <th>操作</th>
-						            </tr>
-						        </thead>
-						        <tbody>
-						            <tr th:each="post : ${data}">
-						                <td>
-						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
-						                    <span th:text="${post.title}"></span> (<span th:text="${post.commentCount}"></span>)</a>
-						                </td>
-						                <td th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
-						                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-						                <td>
-						                    <div class="d-flex gap-2"
-						                         th:if="${post.user != null && (post.user.id.equals(loginUser.id) || loginUser.role.name() == 'ADMIN')}">
-						                        <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-sm btn-outline-secondary">編集</a>
-						                        <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-sm btn-outline-danger">削除</a>
-						                    </div>
-						                </td>
-						            </tr>
-						        </tbody>
-						    </table>
-						</div>
-				    </div>
+
+						<form th:action="@{/posts}" method="get" class="d-flex mb-3">
+							<input type="text" name="keyword" class="form-control me-2"
+								placeholder="タイトルまたは本文を検索" th:value="${keyword}">
+							<button type="submit" class="btn btn-outline-primary">検索</button>
+							<a th:href="@{/posts}" class="btn btn-outline-secondary ms-2">クリア</a>
+						</form>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>タイトル</th>
+									<th>投稿者</th>
+									<th>作成日時</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="post : ${data}">
+									<td><a class="text-decoration-none"
+										th:href="@{/posts/{id}(id=${post.id})}"> <span
+											th:text="${post.title}"></span> (<span
+											th:text="${post.commentCount}"></span>)
+									</a></td>
+									<td
+										th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
+									<td
+										th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+									<td>
+										<div class="d-flex gap-2"
+											th:if="${post.user != null && (post.user.id.equals(loginUser.id) || loginUser.role.name() == 'ADMIN')}">
+											<a th:href="@{/posts/edit/{id}(id=${post.id})}"
+												class="btn btn-sm btn-outline-secondary">編集</a> <a
+												th:href="@{/posts/delete/{id}(id=${post.id})}"
+												class="btn btn-sm btn-outline-danger">削除</a>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>
