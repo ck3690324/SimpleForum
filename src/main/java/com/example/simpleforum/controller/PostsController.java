@@ -44,7 +44,7 @@ public class PostsController {
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		
 		mav.setViewName("list");
-		mav.addObject("title", "シンプルフォーラム | 投稿一覧");
+		mav.addObject("title", "投稿一覧");
 		
 		Users loginUser = getLoginUser(request);
 		mav.addObject("loginUser", loginUser);
@@ -159,7 +159,6 @@ public class PostsController {
 			mav.setViewName("detail");
 			mav.addObject("title", post.getTitle());
 			mav.addObject("data", post);
-//			 mav.addObject("post", post);
 			mav.addObject("comments", commentsService.findByPostId(id));
 
 			// 編集権限確認
