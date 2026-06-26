@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 
 <!-- ブラウザタイトル -->
-<title>ユーザー管理</title>
+<title>シンプルフォーラム | 管理者</title>
 
 <!-- Bootstrap読込 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,13 +35,12 @@
 				<div class="d-flex justify-content-between align-items-center">
 					<!-- 画面タイトル -->
 					<div>				
-						<h3 class="mb-0"><a href="/posts" class="text-white text-decoration-none"> 管理者ページ </a></h3>
+						<h3 class="mb-0"><a href="/posts" class="text-white text-decoration-none">シンプルフォーラム</a></h3>
 						<small>ユーザー管理</small>
 					</div>
 
 					<!-- ログインユーザー情報 -->
 					<div class="text-end">
-						<div class="small mb-1">ログイン中</div>
 						<!-- ログインユーザー名表示 -->
 						<div class="fw-bold" th:text="${loginUser.userName}">ユーザーID</div>
 						<!-- ログアウトボタン -->
@@ -106,24 +105,17 @@
 									</td>
 								</tr>
 							</tbody>
-
 						</table>
-
 					</div>
-
 				</div>
 
 				<!-- ===== 戻るボタン ===== -->
 				<div class="text-center mt-4">
 					<a href="/posts" class="btn btn-secondary px-4"> タイトルページへ </a>
 				</div>
-
 			</div>
-
 		</div>
-
 	</div>
-
 </body>
 </html>
 

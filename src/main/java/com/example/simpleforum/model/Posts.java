@@ -37,15 +37,11 @@ public class Posts {
 	
 	@OneToMany(mappedBy = "post")
 	private List<Comments> comments;
-	
-	@Column(nullable = false, length = 20)
-	private String category;
 
 	// コンストラクタ
 	public Posts() {}
 	
-	public Posts(String category, String title, String text, Users user, LocalDateTime createdAt, LocalDateTime updatedAt) {
-		this.category = category;
+	public Posts(String title, String text, Users user, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.title = title;
 		this.text = text;
 		this.user = user;
@@ -77,10 +73,6 @@ public class Posts {
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
-	
-	public String getCategory() {
-	    return category;
-	}
 
 	// セッター
 	public void setId(int id) {
@@ -105,10 +97,6 @@ public class Posts {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-	
-	public void setCategory(String category) {
-	    this.category = category;
 	}
 	
 	public List<Comments> getComments() {

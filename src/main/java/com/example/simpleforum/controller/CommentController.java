@@ -118,7 +118,7 @@ public class CommentController {
 
 			// 表示用オブジェクト
 			mav.addObject("data", null);
-			mav.addObject("title", "コメント作成");
+			mav.addObject("title", "シンプルフォーラム | コメント");
 			mav.addObject("showTitle", false);
 			mav.addObject("formAction", "/comments/new/" + id);
 			mav.addObject("submitLabel", "コメントする");
@@ -215,7 +215,7 @@ public class CommentController {
 			mav.addObject("readonly", false);
 			mav.addObject("showTitle", false);
 			mav.addObject("data", null);
-			mav.addObject("title", "コメント作成");
+			mav.addObject("title", "シンプルフォーラム | コメント");
 			mav.addObject("formAction", "/comments/new/" + id);
 			mav.addObject("submitLabel", "コメントする");
 			mav.addObject("cancelHref", "/posts/" + id);
@@ -257,7 +257,7 @@ public class CommentController {
 			// 表示用オブジェクト
 			mav.addObject("showTitle", false);
 			mav.addObject("data", comment);
-	        mav.addObject("title", "コメント編集");
+	        mav.addObject("title", "シンプルフォーラム | コメント編集");
 	        mav.addObject("formAction", "/comments/edit/" + id);
 	        mav.addObject("submitLabel", "更新する");
 	        mav.addObject("cancelHref", "/posts/" + comment.getPost().getId());
@@ -315,7 +315,7 @@ public class CommentController {
 			mav.addObject("readonly", false);
 			mav.addObject("showTitle", false);
 			mav.addObject("data", comment);
-			mav.addObject("title", "コメント編集");
+			mav.addObject("title", "シンプルフォーラム | コメント編集");
 			mav.addObject("formAction", "/comments/" + id + "/edit");
 			mav.addObject("submitLabel", "更新する");
 			mav.addObject("cancelHref", "/posts/" + postId);
@@ -387,7 +387,7 @@ public class CommentController {
 			
 			// 表示用オブジェクト
 			mav.addObject("data", comment);
-			mav.addObject("title", "コメント削除確認");
+			mav.addObject("title", "シンプルフォーラム | 削除確認");
 	        mav.addObject("showTitle", false);
 	        mav.addObject("readonly", true);
 	        mav.addObject("formAction", "/comments/delete/" + id);
