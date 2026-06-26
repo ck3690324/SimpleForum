@@ -1,6 +1,7 @@
 package com.example.simpleforum.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -44,6 +45,18 @@ public class UsersService implements UserDetailsService {
     	
     	// 登録処理
     	return usersRepository.save(user);
+    }
+    
+    /**
+     * ユーザー全取得
+     * @return
+     */
+    public List<Users> findAll() {
+    	// 全ユーザー取得
+    	List<Users> users = usersRepository.findAll();
+    	
+    	// リストを返す
+    	return users;
     }
     
     /**
