@@ -44,16 +44,20 @@
 				
 					<!-- 表示領域 -->
 					<form th:action="${formAction}" method="post">
-				
+									
 						<!-- タイトル -->
 						<div class="mb-3" th:if="${showTitle}">
 							<label class="form-label">タイトル</label>
 				
 							<!-- 作成・編集用パーツ -->
-							<input th:if="${!readonly}" type="text" name="title" class="form-control" th:value="${data != null ? data.title : ''}" maxlength="100" />
+							<input th:if="${!readonly}" type="text" 
+								name="title" class="form-control" 
+								th:value="${data != null ? data.title : ''}" maxlength="100" />
 				
 							<!-- 削除確認用パーツ -->
-							<div th:if="${readonly}" class="form-control-plaintext border-bottom" th:text="${data.title}"></div>
+							<div th:if="${readonly}" class="form-control-plaintext border-bottom" 
+								th:text="${data.title}">
+							</div>
 						</div>
 
 						<!-- 本文 -->
@@ -61,10 +65,14 @@
 							<label class="form-label" th:text="${showTitle} ? '本文' : 'コメント'"></label>
 	
 							<!-- 作成・編集用パーツ -->
-							<textarea th:if="${!readonly}" name="text" class="form-control" rows="8" th:text="${data != null ? data.text : ''}"></textarea>
+							<textarea th:if="${!readonly}" name="text"  class="form-control" 
+								rows="8" th:text="${data != null ? data.text : ''}">
+							</textarea>
 	
 							<!-- 削除確認用パーツ -->
-							<div th:if="${readonly}" class="form-control-plaintext border-bottom" style="white-space: pre-wrap;" th:text="${data.text}"></div>
+							<div th:if="${readonly}" class="form-control-plaintext border-bottom" 
+								style="white-space: pre-wrap;" th:text="${data.text}">
+							</div>
 						</div>
 
 						<!-- 操作ボタン -->

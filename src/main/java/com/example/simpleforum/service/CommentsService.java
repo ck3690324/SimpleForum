@@ -19,7 +19,7 @@ public class CommentsService {
 	private CommentRepository commentRepository;
 	
 	/**
-	 * コメント処理
+	 * コメント送信処理
 	 * @param post コメントする投稿
 	 * @param text コメント本文
 	 * @param author ユーザー
@@ -56,6 +56,13 @@ public class CommentsService {
 		return commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("投稿が見つかりません"));
 	}
 	
+	/**
+	 * コメント更新処理
+	 * @param id コメントID
+	 * @param text コメント本文
+	 * @param loginUser 現在ログイン中のユーザー
+	 * @return
+	 */
 	public Comments update(Long id, String text, Users loginUser) {
 		// 空欄チェック
 		if (text.isBlank()) {
