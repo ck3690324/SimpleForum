@@ -18,13 +18,13 @@
 			
 				<!-- 本体 -->
 				<div class="card-body p-4">
-					<p th:text="${msg}"></p>
+					<div th:if="${msg}" class="alert alert-danger" th:text="${msg}"></div>
 					<form th:action="@{/login}" method="post">
 						<div class="mb-3">
-							<label class="form-label">ユーザー名</label> <input type="text" name="username" class="form-control" />
+							<label class="form-label">ユーザー名:</label> <input type="text" name="username" class="form-control" />
 						</div>
 						<div class="mb-3">
-							<label class="form-label">パスワード</label> <input type="password" name="password" class="form-control" />
+							<label class="form-label">パスワード:</label> <input type="password" name="password" class="form-control" />
 						</div>
 						<div class="mb-3">
 							<input type="submit" value="ログイン" class="btn btn-primary" />

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<title th:text="${title}"></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-			rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body class="bg-light">
 		<div class="container mt-5 mb-5">
@@ -15,24 +14,22 @@
 				<!-- ヘッダー -->
 				<div class="card-header bg-primary text-white">
 					<div class="d-flex justify-content-between align-items-center">
-						<h3 class="mb-0"><a href="/posts" class="text-white text-decoration-none"> シンプル掲示板システム </a></h3>
+						<h3 class="mb-0">
+							<a href="/posts" class="text-white text-decoration-none">シンプルフォーラム</a>
+						</h3>
 						<div class="d-flex align-items-center gap-2">
-				
 							<!-- 管理者の場合：ユーザー名を押すと管理者画面へ -->
-							<a th:if="${loginUser.role == T(com.example.simpleforum.model.Role).ADMIN}"
-							   th:href="@{/admin/users}"
-							   class="bg-white border rounded px-2 py-1 d-flex align-items-center gap-2 text-decoration-none">
+							<a th:if="${loginUser.role == T(com.example.simpleforum.model.Role).ADMIN}" th:href="@{/admin/users}" class="bg-white border rounded px-2 py-1 d-flex align-items-center gap-2 text-decoration-none">
 								<span class="text-dark" th:text="${loginUser.userName}">ユーザー名</span>
 								<span class="badge bg-secondary" th:text="${loginUser.role.label}">ロール</span>
 							</a>
-				
+							
 							<!-- 一般ユーザーの場合：クリックできない表示 -->
-							<div th:if="${loginUser.role != T(com.example.simpleforum.model.Role).ADMIN}"
-							     class="bg-white border rounded px-2 py-1 d-flex align-items-center gap-2">
+							<div th:if="${loginUser.role != T(com.example.simpleforum.model.Role).ADMIN}" class="bg-white border rounded px-2 py-1 d-flex align-items-center gap-2">
 								<span class="text-dark" th:text="${loginUser.userName}">ユーザー名</span>
 								<span class="badge bg-secondary" th:text="${loginUser.role.label}">ロール</span>
 							</div>
-				
+							
 							<form th:action="@{/logout}" method="post" class="mb-0">
 								<button type="submit" class="btn btn-light btn-sm btn-outline-danger">ログアウト</button>
 							</form>
@@ -40,50 +37,50 @@
 					</div>
 				</div>
 				
-				<div class="card-body p-4">		
-				    <div class="card mb-4">
-					<div class="card-header d-flex justify-content-between align-items-center">
-						<h4 class="mb-0 text-decoration-none" th:text="${title}"></h4>
-						<a th:href="@{/posts/new}" class="btn btn-primary btn-sm">新規投稿</a>
-					</div>
-					<div class="card-body">
-						<form th:action="@{/posts}" method="get" class="d-flex flex-nowrap align-items-center mb-3">
-							<input type="text" name="keyword" class="form-control me-2"
-								placeholder="タイトル検索" th:value="${keyword}">
-							<button type="submit" class="btn btn-outline-primary text-nowrap">検索</button>
-							<a th:href="@{/posts}" class="btn btn-outline-secondary ms-2 text-nowrap">クリア</a>
-						</form>
-
-						<table class="table table-striped">
-						        <thead>
-						            <tr>
-						                <th>タイトル</th>
-						                <th>投稿者</th>
-						                <th>作成日時</th>
-						                <th>操作</th>
-						            </tr>
-						        </thead>
-						        <tbody>
-						            <tr th:each="post : ${data}" style="height: 50px;">
-						                <td class="align-middle">
-						                    <a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
-						                    	【<span th:text="${post.category}"></span>】
-						                    	<span th:text="${post.title}"></span>
-        										<span th:if="${post.commentCount > 0}">(<span th:text="${post.commentCount}"></span>)</span>
-						                    </a>
-						                </td>
-						                <td class="align-middle" th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
-						                <td class="align-middle" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-						                <td class="align-middle">
-						                    <div class="d-flex gap-2"
-						                         th:if="${(post.user != null && post.user.id.equals(loginUser.id)) || loginUser.role.name() == 'ADMIN'}">
-						                        <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-sm btn-outline-secondary">編集</a>
-						                        <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-sm btn-outline-danger">削除</a>
-						                    </div>
-						                </td>
-						            </tr>
-						        </tbody>
-						    </table>
+				<!-- ボディ -->
+				<div class="card-body p-4">
+					<div class="card mb-4">
+						<div class="card-header d-flex justify-content-between align-items-center">
+							<h4 class="mb-0 text-decoration-none" th:text="${title}"></h4>
+							<a th:href="@{/posts/new}" class="btn btn-primary btn-sm">新規投稿</a>
+						</div>
+						<div class="card-body">
+							<form th:action="@{/posts}" method="get" class="d-flex flex-nowrap align-items-center mb-3">
+								<input type="text" name="keyword" class="form-control me-2" placeholder="タイトル検索" th:value="${keyword}">
+								<button type="submit" class="btn btn-outline-primary text-nowrap">検索</button>
+								<a th:href="@{/posts}" class="btn btn-outline-secondary ms-2 text-nowrap">クリア</a>
+							</form>
+							
+							<!-- テーブル -->
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>タイトル</th>
+										<th>投稿者</th>
+										<th>作成日時</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+									<tr th:each="post : ${data}" style="height: 50px;">
+										<td class="align-middle">
+											<a class="text-decoration-none" th:href="@{/posts/{id}(id=${post.id})}">
+												<span th:text="${post.title}"></span>
+												<span th:if="${post.commentCount > 0}">(<span th:text="${post.commentCount}"></span>)</span>
+											</a>
+										</td>
+										<td class="align-middle" th:text="${post.user != null ? post.user.userName : '削除済みのユーザー'}"></td>
+										<td class="align-middle" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+										<td class="align-middle">
+											<div class="d-flex gap-2" th:if="${(post.user != null && post.user.id.equals(loginUser.id)) || loginUser.role.name() == 'ADMIN'}">
+												<a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-sm btn-outline-secondary">編集</a> 
+												<a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-sm btn-outline-danger">削除</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>

@@ -45,7 +45,7 @@ public class PostsController {
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		
 		mav.setViewName("list");
-		mav.addObject("title", "投稿一覧");
+		mav.addObject("title", "シンプルフォーラム | 投稿一覧");
 		
 		Users loginUser = getLoginUser(request);
 		session.setAttribute("loginUser", loginUser);
@@ -79,7 +79,7 @@ public class PostsController {
 			HttpServletRequest request) {
 		
 		mav.setViewName("form");
-		mav.addObject("title", "投稿作成");
+		mav.addObject("title", "シンプルフォーラム | 投稿作成");
 		mav.addObject("loginUser", getLoginUser(request));
 
 		// 編集用データ = NULL(新規作成)
@@ -113,9 +113,6 @@ public class PostsController {
 			@RequestParam String title,
 			@RequestParam String text) {
 		
-		// ページタイトル(エラー時)
-		mav.addObject("title", "投稿作成");
-		
 		// ユーザー(投稿者)情報を取得
 		Users author = getLoginUser(request);
 		
@@ -136,6 +133,7 @@ public class PostsController {
 	        mav.addObject("data", null);
 	        mav.addObject("readonly", false);
 	        mav.addObject("showTitle", true);
+	        mav.addObject("title", "シンプルフォーラム | 投稿作成");
 	        mav.addObject("formAction", "/posts/new");
 	        mav.addObject("submitLabel", "投稿する");
 	        mav.addObject("cancelHref", "/posts");
@@ -218,7 +216,7 @@ public class PostsController {
 			
 			// 表示用オブジェクト
 			mav.addObject("data", post);
-			mav.addObject("title", "投稿編集");
+			mav.addObject("title", "シンプルフォーラム | 投稿編集");
 			mav.addObject("showTitle", true);
 			mav.addObject("formAction", "/posts/edit/" + id);
 			mav.addObject("submitLabel", "更新する");
@@ -277,7 +275,7 @@ public class PostsController {
 			mav.addObject("readonly", false);
 
 			// 表示用オブジェクト
-			mav.addObject("title", "投稿編集");
+			mav.addObject("title", "シンプルフォーラム | 投稿編集");
 			mav.addObject("showTitle", true);
 			mav.addObject("formAction", "/posts/" + id + "/edit");
 			mav.addObject("submitLabel", "更新する");
@@ -316,7 +314,7 @@ public class PostsController {
 			
 			// 表示用オブジェクト
 			mav.addObject("data", post);
-			mav.addObject("title", "投稿削除確認");
+			mav.addObject("title", "シンプルフォーラム | 削除確認");
 			mav.addObject("showTitle", true);
 			mav.addObject("readonly", true);
 			mav.addObject("formAction", "/posts/delete/" + id);
