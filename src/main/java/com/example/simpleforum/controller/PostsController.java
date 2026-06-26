@@ -19,7 +19,6 @@ import com.example.simpleforum.service.PostsService;
 import com.example.simpleforum.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PostsController {
@@ -41,27 +40,21 @@ public class PostsController {
 	@GetMapping("/posts")
 	public ModelAndView index(
 			ModelAndView mav,
-			HttpServletRequest request, HttpSession session,
+			HttpServletRequest request,
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		
 		mav.setViewName("list");
 		mav.addObject("title", "シンプルフォーラム | 投稿一覧");
 		
 		Users loginUser = getLoginUser(request);
-		session.setAttribute("loginUser", loginUser);
 		mav.addObject("loginUser", loginUser);
 		
 		// 検索キーワードがある場合は検索、ない場合は全件表示
 		List<Posts> list = postsService.search(keyword);
 		mav.addObject("data", list);
-//		mav.addObject("keyword", keyword);
-		
-//		// 投稿全件取得
-//		List<Posts> list = postsService.findAll();
-//		mav.addObject("data", list);
-//		
-//		// ユーザー情報
-//		mav.addObject("loginUser", getLoginUser(request));
+	
+		// ユーザー情報
+		mav.addObject("loginUser", getLoginUser(request));
 				
 		// ビューを返す
 		return mav;
